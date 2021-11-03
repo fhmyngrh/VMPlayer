@@ -75,31 +75,31 @@ async def vplay(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f" To use me, I need to be an **Administrator** with the following **permissions**:\n\n�  __Delete messages__\n�  __Ban users__\n�  __Add users__\n�  __Manage voice chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**"
         )
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-            "missing required permission:" + "\n\n�  __Manage voice chat__"
+            "missing required permission:" + "\n\n» ❌ __Manage voice chat__"
         )
         return
     if not a.can_delete_messages:
         await m.reply_text(
-            "missing required permission:" + "\n\n�  __Delete messages__"
+            "missing required permission:" + "\n\n» ❌ __Delete messages__"
         )
         return
     if not a.can_invite_users:
-        await m.reply_text("missing required permission:" + "\n\n�  __Add users__")
+        await m.reply_text("missing required permission:" + "\n\n» ❌ __Add users__")
         return
     if not a.can_restrict_members:
-        await m.reply_text("missing required permission:" + "\n\n�  __Ban users__")
+        await m.reply_text("missing required permission:" + "\n\n» ❌ __Ban users__")
         return
     try:
         ubot = await user.get_me()
         b = await c.get_chat_member(chat_id, ubot.id)
         if b.status == "kicked":
             await m.reply_text(
-                f"@{ASSISTANT_NAME} **is banned in group** {m.chat.title}\n\n� **unban the userbot first if you want to use this bot.**"
+                f"@{ASSISTANT_NAME} **is banned in group** {m.chat.title}\n\n» **unban the userbot first if you want to use this bot.**"
             )
             return
     except UserNotParticipant:
@@ -107,7 +107,7 @@ async def vplay(c: Client, m: Message):
             try:
                 await user.join_chat(m.chat.username)
             except Exception as e:
-                await m.reply_text(f" **userbot failed to join**\n\n**reason**:{e}")
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
                 return
         else:
             try:
@@ -118,12 +118,12 @@ async def vplay(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f" **userbot failed to join**\n\n**reason**:{e}"
+                    f"❌ **userbot failed to join**\n\n**reason**:{e}"
                 )
 
     if replied:
         if replied.video or replied.document:
-            loser = await replied.reply(" **downloading video...**")
+            loser = await replied.reply("📥 **downloading video...**")
             dl = await replied.download()
             link = replied.link
             if len(m.command) < 2:
@@ -135,7 +135,7 @@ async def vplay(c: Client, m: Message):
                 else:
                     Q = 720
                     await loser.edit(
-                        "� __only 720, 480, 360 allowed__ \n **now streaming video in 720p**"
+                        "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
                     )
             try:
                 if replied.video:
@@ -151,7 +151,7 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_1}",
-                    caption=f" **Track added to the queue**\n\n[{songname}]({link})\ **Chat:** `{chat_id}`\n **Request by:** {requester}\n **At position �** `{pos}`",
+                    caption=f"💡 **Track added to the queue**\n\n[{songname}]({link})\💬 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}\n🔢 **At position »** `{pos}`",
                     reply_markup=keyboard,
                 )
             else:
@@ -175,28 +175,28 @@ async def vplay(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_2}",
-                    caption=f" **video streaming started.**\n\n[{songname}]({link})\ **Chat:** `{chat_id}`\n **Status:** `Playing`\n **Request by:** {requester}",
+                    caption=f"💡 **video streaming started.**\n\n[{songname}]({link})\💬 **Chat:** `{chat_id}`\nℹ️ **Status:** `Playing`\n🎧 **Request by:** {requester}",
                     reply_markup=keyboard,
                 )
         else:
             if len(m.command) < 2:
                 await m.reply(
-                    "� reply to an **video file** or **give something to search.**"
+                    "» reply to an **video file** or **give something to search.**"
                 )
             else:
-                loser = await m.reply(" **searching...**")
+                loser = await m.reply("🔎 **searching...**")
                 query = m.text.split(None, 1)[1]
                 search = ytsearch(query)
                 Q = 720
                 amaze = HighQualityVideo()
                 if search == 0:
-                    await loser.edit(" **no results found.**")
+                    await loser.edit("⛔ **no results found.**")
                 else:
                     songname = search[0]
                     url = search[1]
                     veez, ytlink = await ytdl(url)
                     if veez == 0:
-                        await loser.edit(f" yt-dl issues detected\n\n� `{ytlink}`")
+                        await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                     else:
                         if chat_id in QUEUE:
                             pos = add_to_queue(
@@ -206,7 +206,7 @@ async def vplay(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=f"{IMG_1}",
-                                caption=f" **Track added to the queue**\n\n[{songname}]({url})\ **Chat:** `{chat_id}`\n **Request by:** {requester}\n **At position �** `{pos}`",
+                                caption=f"💡 **Track added to the queue**\n\n[{songname}]({url})\💬 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}\n🔢 **At position »** `{pos}`",
                                 reply_markup=keyboard,
                             )
                         else:
@@ -225,31 +225,31 @@ async def vplay(c: Client, m: Message):
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
                                     photo=f"{IMG_2}",
-                                    caption=f" **video streaming started.**\n\n[{songname}]({url})\ **Chat:** `{chat_id}`\n **Status:** `Playing`\n **Request by:** {requester}",
+                                    caption=f"💡 **video streaming started.**\n\n[{songname}]({url})\💬 **Chat:** `{chat_id}`\nℹ️ **Status:** `Playing`\n🎧 **Request by:** {requester}",
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
-                                await m.reply_text(f" error: `{ep}`")
+                                await m.reply_text(f"⛔ error: `{ep}`")
 
     else:
         if len(m.command) < 2:
             await m.reply(
-                "� reply to an **video file** or **give something to search.**"
+                "» reply to an **video file** or **give something to search.**"
             )
         else:
-            loser = await m.reply(" **searching...**")
+            loser = await m.reply("🔎 **searching...**")
             query = m.text.split(None, 1)[1]
             search = ytsearch(query)
             Q = 720
             amaze = HighQualityVideo()
             if search == 0:
-                await loser.edit(" **no results found.**")
+                await loser.edit("⛔ **no results found.**")
             else:
                 songname = search[0]
                 url = search[1]
                 veez, ytlink = await ytdl(url)
                 if veez == 0:
-                    await loser.edit(f" yt-dl issues detected\n\n� `{ytlink}`")
+                    await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
                 else:
                     if chat_id in QUEUE:
                         pos = add_to_queue(chat_id, songname, ytlink, url, "Video", Q)
@@ -259,7 +259,7 @@ async def vplay(c: Client, m: Message):
                         )
                         await m.reply_photo(
                             photo=f"{IMG_1}",
-                            caption=f" **Track added to the queue**\n\n[{songname}]({url})\ **Chat:** `{chat_id}`\n **Request by:** {requester}\n **At position �** `{pos}`",
+                            caption=f"💡 **Track added to the queue**\n\n[{songname}]({url})\💬 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}\n🔢 **At position »** `{pos}`",
                             reply_markup=keyboard,
                         )
                     else:
@@ -278,11 +278,11 @@ async def vplay(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=f"{IMG_2}",
-                                caption=f" **video streaming started.**\n\n[{songname}]({url})\ **Chat:** `{chat_id}`\n **Status:** `Playing`\n **Request by:** {requester}",
+                                caption=f"💡 **video streaming started.**\n\n[{songname}]({url})\💬 **Chat:** `{chat_id}`\nℹ️ **Status:** `Playing`\n🎧 **Request by:** {requester}",
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
-                            await m.reply_text(f" error: `{ep}`")
+                            await m.reply_text(f"⛔ error: `{ep}`")
 
 
 @Client.on_message(command(["vstream", f"vstream@{BOT_USERNAME}"]) & other_filters)
@@ -304,31 +304,31 @@ async def vstream(c: Client, m: Message):
     a = await c.get_chat_member(chat_id, aing.id)
     if a.status != "administrator":
         await m.reply_text(
-            f" To use me, I need to be an **Administrator** with the following **permissions**:\n\n�  __Delete messages__\n�  __Ban users__\n�  __Add users__\n�  __Manage voice chat__\n\nData is **updated** automatically after you **promote me**"
+            f"💡 To use me, I need to be an **Administrator** with the following **permissions**:\n\n» ❌ __Delete messages__\n» ❌ __Ban users__\n» ❌ __Add users__\n» ❌ __Manage voice chat__\n\nData is **updated** automatically after you **promote me**"
         )
         return
     if not a.can_manage_voice_chats:
         await m.reply_text(
-            "missing required permission:" + "\n\n�  __Manage voice chat__"
+            "missing required permission:" + "\n\n» ❌ __Manage voice chat__"
         )
         return
     if not a.can_delete_messages:
         await m.reply_text(
-            "missing required permission:" + "\n\n�  __Delete messages__"
+            "missing required permission:" + "\n\n» ❌ __Delete messages__"
         )
         return
     if not a.can_invite_users:
-        await m.reply_text("missing required permission:" + "\n\n�  __Add users__")
+        await m.reply_text("missing required permission:" + "\n\n» ❌ __Add users__")
         return
     if not a.can_restrict_members:
-        await m.reply_text("missing required permission:" + "\n\n�  __Ban users__")
+        await m.reply_text("missing required permission:" + "\n\n» ❌ __Ban users__")
         return
     try:
         ubot = await user.get_me()
         b = await c.get_chat_member(chat_id, ubot.id)
         if b.status == "kicked":
             await m.reply_text(
-                f"@{ASSISTANT_NAME} **is banned in group** {m.chat.title}\n\n� **unban the userbot first if you want to use this bot.**"
+                f"@{ASSISTANT_NAME} **is banned in group** {m.chat.title}\n\n» **unban the userbot first if you want to use this bot.**"
             )
             return
     except UserNotParticipant:
@@ -336,7 +336,7 @@ async def vstream(c: Client, m: Message):
             try:
                 await user.join_chat(m.chat.username)
             except Exception as e:
-                await m.reply_text(f" **userbot failed to join**\n\n**reason**:{e}")
+                await m.reply_text(f"❌ **userbot failed to join**\n\n**reason**:{e}")
                 return
         else:
             try:
@@ -347,16 +347,16 @@ async def vstream(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f" **userbot failed to join**\n\n**reason**:{e}"
+                    f"❌ **userbot failed to join**\n\n**reason**:{e}"
                 )
 
     if len(m.command) < 2:
-        await m.reply("� give me a live-link/m3u8 url/youtube link to stream.")
+        await m.reply("» give me a live-link/m3u8 url/youtube link to stream.")
     else:
         if len(m.command) == 2:
             link = m.text.split(None, 1)[1]
             Q = 720
-            loser = await m.reply(" **processing stream...**")
+            loser = await m.reply("🔄 **processing stream...**")
         elif len(m.command) == 3:
             op = m.text.split(None, 1)[1]
             link = op.split(None, 1)[0]
@@ -366,9 +366,9 @@ async def vstream(c: Client, m: Message):
             else:
                 Q = 720
                 await m.reply(
-                    "� __only 720, 480, 360 allowed__ \n **now streaming video in 720p**"
+                    "» __only 720, 480, 360 allowed__ \n💡 **now streaming video in 720p**"
                 )
-            loser = await m.reply(" **processing stream...**")
+            loser = await m.reply("🔄 **processing stream...**")
         else:
             await m.reply("**/vstream {link} {720/480/360}**")
 
@@ -381,7 +381,7 @@ async def vstream(c: Client, m: Message):
             veez = 1
 
         if veez == 0:
-            await loser.edit(f" yt-dl issues detected\n\n� `{ytlink}`")
+            await loser.edit(f"❌ yt-dl issues detected\n\n» `{ytlink}`")
         else:
             if chat_id in QUEUE:
                 pos = add_to_queue(chat_id, "Live Stream", livelink, link, "Video", Q)
@@ -389,7 +389,7 @@ async def vstream(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_1}",
-                    caption=f" **Track added to the queue**\n\ **Chat:** `{chat_id}`\n **Request by:** {requester}\n **At position �** `{pos}`",
+                    caption=f"💡 **Track added to the queue**\n\💬 **Chat:** `{chat_id}`\n🎧 **Request by:** {requester}\n🔢 **At position »** `{pos}`",
                     reply_markup=keyboard,
                 )
             else:
@@ -416,8 +416,8 @@ async def vstream(c: Client, m: Message):
                     )
                     await m.reply_photo(
                         photo=f"{IMG_2}",
-                        caption=f" **[Live stream video]({link}) started.**\n\ **Chat:** `{chat_id}`\n **Status:** `Playing`\n **Request by:** {requester}",
+                        caption=f"💡 **[Live stream video]({link}) started.**\n\💬 **Chat:** `{chat_id}`\nℹ️ **Status:** `Playing`\n🎧 **Request by:** {requester}",
                         reply_markup=keyboard,
                     )
                 except Exception as ep:
-                    await m.reply_text(f" error: `{ep}`")
+                    await m.reply_text(f"⛔ error: `{ep}`")
