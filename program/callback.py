@@ -15,13 +15,12 @@ from config import (
 @Client.on_callback_query(filters.regex("cbstart"))
 async def cbstart(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""✨ **Welcome {message.from_user.mention()} !**\n
+        f"""✨ **Welcome [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**\n
 💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **Memungkinkan Anda memutar musik dan video di grup melalui Obrolan Video Telegram!**
 
 💡 **Cari tahu semua perintah Bot dan cara kerjanya dengan mengklik » 📚 Commands button!**
 
-🔖 **Untuk mengetahui cara menggunakan bot ini, silakan klik » ❓ Basic Guide button!**
-""",
+🔖 **Untuk mengetahui cara menggunakan bot ini, silakan klik » ❓ Basic Guide button!**""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
